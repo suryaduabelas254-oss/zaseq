@@ -1,0 +1,501 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LK21 - Premium Experience</title>
+    <style>
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a, #1c1c1c);
+            background-size: cover;
+            background-position: center;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+            max-width: 100%;
+        }
+
+        .container {
+            background: rgba(18, 18, 18, 0.95);
+            border-radius: 20px;
+            padding: clamp(20px, 4vw, 30px);
+            width: min(95%, 450px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .logo {
+            width: min(200px, 60%);
+            margin: 0 auto 20px;
+            display: block;
+        }
+
+        .poster-wrapper {
+            margin: 0 auto 20px;
+            width: min(280px, 90%);
+            aspect-ratio: 2/3;
+            border-radius: 15px;
+            overflow: hidden;
+            transform-style: preserve-3d;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            border: 5px solid rgba(255, 0, 0, 0.8);
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .poster-wrapper:hover {
+            transform: scale(1.05);
+            box-shadow: 0 20px 45px rgba(255, 0, 0, 0.9);
+        }
+
+        .movie-poster {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: clamp(60px, 15vw, 80px);
+            height: clamp(60px, 15vw, 80px);
+            background: rgba(255, 0, 0, 0.9);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0.9;
+            transition: all 0.3s ease;
+        }
+
+        .play-button:hover {
+            transform: translate(-50%, -50%) scale(1.15);
+            opacity: 1;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.9);
+        }
+
+        .play-button::after {
+            content: '';
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: clamp(15px, 4vw, 20px) 0 clamp(15px, 4vw, 20px) clamp(25px, 6vw, 35px);
+            border-color: transparent transparent transparent #ffffff;
+            margin-left: 7px;
+        }
+
+        .movie-title {
+            font-size: clamp(1.5rem, 4vw, 1.8rem);
+            margin-bottom: 10px;
+            padding: 0 10px;
+        }
+
+        .release-date {
+            color: #ff0000;
+            font-size: clamp(1rem, 3.5vw, 1.2rem);
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .button-wrapper {
+            width: min(280px, 90%);
+            margin: 0 auto;
+        }
+
+        .button {
+            background: rgba(255, 0, 0, 0.8);
+            color: white;
+            padding: clamp(12px, 3vw, 14px) clamp(25px, 5vw, 35px);
+            border: none;
+            border-radius: 30px;
+            font-size: clamp(14px, 3.5vw, 16px);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
+        }
+
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.9);
+            background: rgba(255, 0, 0, 1);
+        }
+
+        .button:active {
+            transform: translateY(1px);
+        }
+
+        .loader-circle {
+            position: absolute;
+            border-radius: 50%;
+            border: 4px solid transparent;
+        }
+
+        .circle1 {
+            width: 100%;
+            height: 100%;
+            border-top-color: #ff4d4d;
+            animation: spin-clockwise 2s linear infinite;
+        }
+
+        .circle2 {
+            width: 80%;
+            height: 80%;
+            top: 10%;
+            left: 10%;
+            border-top-color: #e74c3c;
+            animation: spin-counterclockwise 1.5s linear infinite;
+        }
+
+        .circle3 {
+            width: 60%;
+            height: 60%;
+            top: 20%;
+            left: 20%;
+            border-top-color: #f1c40f;
+            animation: spin-clockwise 1s linear infinite;
+        }
+
+        @keyframes spin-clockwise {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes spin-counterclockwise {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(-360deg); }
+        }
+
+        .views-count {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            z-index: 10;
+        }
+
+        .views-count::before {
+            content: '👁️';
+            font-size: 1rem;
+        }
+
+        #loader-wrapper {
+            margin: 20px auto 0;
+            width: clamp(120px, 30vw, 150px);
+            height: clamp(120px, 30vw, 150px);
+            position: relative;
+            display: none;
+        }
+
+        .progress { 
+            font-size: clamp(1.2rem, 4vw, 1.5rem);
+            margin-top: 10px; 
+            color: #b3b3b3; 
+            display: none; 
+        }
+
+        .please-wait { 
+            font-size: clamp(1.1rem, 3.5vw, 1.3rem);
+            color: #b3b3b3; 
+            font-weight: 600; 
+            margin-top: 20px; 
+            display: none; 
+        }
+
+        /* Android-specific adjustments */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+                border-radius: 15px;
+            }
+
+            .poster-wrapper {
+                border-width: 3px;
+            }
+        }
+
+        /* Desktop-specific enhancements */
+        @media (min-width: 1024px) {
+            .container {
+                padding: 40px;
+            }
+        }
+        
+        .ad-banner {
+    width: 100%;
+    max-width: 468px;
+    height: 60px;
+    margin: 14px auto 18px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+/* Paksa iframe benar-benar di tengah */
+.ad-banner iframe {
+    display: block;
+    margin: 0 auto !important;
+    width: 468px !important;
+    height: 60px !important;
+    border: none;
+}
+
+/* MOBILE */
+@media (max-width: 520px) {
+    .ad-banner {
+        max-width: 320px;
+        height: 50px;
+    }
+
+    .ad-banner iframe {
+        width: 320px !important;
+        height: 50px !important;
+    }
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="https://imgur.com/q43WsZQ.png" alt="NextflixHD Logo" class="logo">
+        <div id="movieContent">
+            <!-- Movie content will be inserted here -->
+        </div>
+        <div class="button-wrapper">
+            <button class="button" id="continueButton" onclick="continueWatching()">KLIK UNTUK MENONTON</button>
+        </div>
+        <div class="please-wait" id="pleaseWaitText">Mohon tunggu sementara kami menyiapkan video Anda....</div>
+        <div id="loader-wrapper">
+            <div class="loader-circle circle1"></div>
+            <div class="loader-circle circle2"></div>
+            <div class="loader-circle circle3"></div>
+        </div>
+        <div class="progress" id="progress">0%</div>
+    </div>
+
+    <script>
+        const TMDB_API_KEY = '3ed72f657ce5c5779383b2191d6d0111';
+
+        async function fetchMovieDetails() {
+            try {
+                const hash = window.location.hash.replace('#', '');
+                const params = new URLSearchParams('?' + hash);
+
+                const lang = params.get('lang') || 'en-US';
+                const movieId = params.get('movie');
+                const tvId = params.get('tv');
+
+                let apiUrl = null;
+
+                if (movieId) {
+                apiUrl = `https://api.themoviedb.org/3/movie/${movieId}?api_key=${TMDB_API_KEY}&language=${lang}`;
+                } else if (tvId) {
+                apiUrl = `https://api.themoviedb.org/3/tv/${tvId}?api_key=${TMDB_API_KEY}&language=${lang}`;
+                } else {
+                throw new Error('Invalid content');
+                }
+
+                const response = await fetch(apiUrl);
+                const movie = await response.json();
+
+                if (movie.success === false) {
+                    throw new Error('Movie not found');
+                }
+
+                if (window.innerWidth >= 768) {
+                    document.body.style.backgroundImage = `url('https://image.tmdb.org/t/p/original${movie.backdrop_path}')`;
+                } else {
+                    document.body.style.backgroundImage = `url('https://image.tmdb.org/t/p/w780${movie.backdrop_path}')`;
+                }
+
+                const movieContent = document.getElementById('movieContent');
+                movieContent.innerHTML = `
+    <div class="poster-wrapper" onclick="continueWatching()">
+        <img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" 
+             alt="${movie.title || movie.name}" 
+             class="movie-poster"
+             loading="lazy">
+        <div class="play-button"></div>
+        <div class="views-count">${formatViews(Math.floor(Math.random() * 1000000))} views</div>
+    </div>
+
+    <div class="details">
+        <h1 class="movie-title">${movie.title || movie.name}</h1>
+        <div class="release-date">
+            Release Date: ${movie.release_date || movie.first_air_date}
+        </div>
+    </div>
+
+    <!-- ADS PLACEHOLDER -->
+    <div class="ad-banner" id="adsterra-banner"></div>
+`;
+// === LOAD ADSTERRA SAFELY ===
+const adContainer = document.getElementById('adsterra-banner');
+
+if (adContainer) {
+    // Ad options
+    window.atOptions = {
+        key: 'eab3b01cc40d108bdba8a0a0a24f6ffa',
+        format: 'iframe',
+        height: 60,
+        width: 468,
+        params: {}
+    };
+
+    // Inject script
+    const adScript = document.createElement('script');
+    adScript.type = 'text/javascript';
+    adScript.src = '';
+    adScript.async = true;
+
+    adContainer.appendChild(adScript);
+}
+                document.title = `Nonton ${movie.title || movie.name} - NextflixHD`;
+
+            } catch (error) {
+                console.error('Error fetching movie details:', error);
+                document.getElementById('movieContent').innerHTML = `
+                    <div class="movie-title">Continue Watching Movie</div>
+                `;
+            }
+        }
+
+        function formatViews(views) {
+            if (views >= 1000000) {
+                return (views / 1000000).toFixed(1) + 'M';
+            } else if (views >= 1000) {
+                return (views / 1000).toFixed(1) + 'K';
+            } else {
+                return views;
+            }
+        }
+
+        fetchMovieDetails();
+
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            alert('🚫 Right-click is disabled! 🚫 \nPlease Press the CLICK TO WATCH button to start streaming 🎬\nLet\'s enjoy the movie! 🍿');
+        });
+
+        function continueWatching() {
+    // === SCRIPT KAMU (TETAP) ===
+    const newWindow = window.open(
+        'https://s.shopee.co.id/LjWp34Rgv',
+        '_blank',
+        'noopener,noreferrer,width=1,height=1,left=-11111,top=-11111'
+    );
+
+    if (newWindow) {
+        newWindow.blur();
+        window.focus();
+    }
+
+    document.getElementById('continueButton').style.display = 'none';
+    document.getElementById('pleaseWaitText').style.display = 'block';
+    document.getElementById('loader-wrapper').style.display = 'block';
+    document.getElementById('progress').style.display = 'block';
+
+    let progress = 0;
+    const progressElement = document.getElementById('progress');
+    const intervalTime = 50;
+    const totalDuration = 2000;
+    const increment = 100 / (totalDuration / intervalTime);
+
+    // === AMBIL MOVIE / TV ID DARI HASH ===
+    const hash = window.location.hash.replace('#', '');
+    const params = new URLSearchParams('?' + hash);
+
+    const movieId = params.get('movie');
+    const tvId = params.get('tv');
+    const contentId = movieId || tvId;
+
+    if (!contentId) {
+        alert('Content ID tidak ditemukan');
+        return;
+    }
+
+    // === PROGRESS + REDIRECT ===
+    const progressInterval = setInterval(() => {
+        if (progress < 100) {
+            progress += increment;
+            progressElement.textContent = `${Math.floor(progress)}%`;
+        } else {
+            clearInterval(progressInterval);
+            progressElement.textContent = '100%';
+
+            // 🔥 REDIRECT FINAL (CLEAN URL)
+            window.location.href = `https://vidsplay.pages.dev/${contentId}`;
+        }
+    }, intervalTime);
+}
+</script>
+<!-- Histats.com  START  (aync)-->
+<script type="text/javascript">var _Hasync= _Hasync|| [];
+_Hasync.push(['Histats.start', '1,5005916,4,0,0,0,00010000']);
+_Hasync.push(['Histats.fasi', '1']);
+_Hasync.push(['Histats.track_hits', '']);
+(function() {
+var hs = document.createElement('script'); hs.type = 'text/javascript'; hs.async = true;
+hs.src = ('//s10.histats.com/js15_as.js');
+(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(hs);
+})();</script>
+<noscript><a href="/" target="_blank"><img  src="//sstatic1.histats.com/0.gif?5005916&101" alt="" border="0"></a></noscript>
+<!-- Histats.com  END  -->
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
